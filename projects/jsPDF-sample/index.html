@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>jsPDF Sample</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="assets/custom/js/jspdf.min.js"></script>
+    <!--
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js" integrity="sha384-CchuzHs077vGtfhGYl9Qtc7Vx64rXBXdIAZIPbItbNyWIRTdG0oYAqki3Ry13Yzu" crossorigin="anonymous"></script>
+    -->    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">  
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+
+        $(function() {
+            //Initialized tooltip with JQuery
+            $('[data-toggle="tooltip"]').tooltip(); 
+        });
+
+        function doPdf(){
+            var pdf = jsPDF();
+            pdf.text('Hello World!!', 10, 10);
+            pdf.save('output.pdf');
+        }
+
+        function doPdf2x4(){
+            // Landscape export, 2×4 inches
+            var doc = new jsPDF({
+            orientation: 'landscape',
+            unit: 'in',
+            format: [4, 2]
+            })
+
+            doc.text('Hello world!', 1, 1)
+            doc.save('two-by-four.pdf');
+        }
+
+        function doPdfSt(st){
+            var pdf = jsPDF();
+
+            pdf.text('Merhaba World!!', 10, 10);
+            if(st == 1)
+                pdf.output('datauristring');
+            else if(st == 2){
+                pdf.output('datauri');
+            }
+            else if(st == 3){
+                pdf.output('dataurlnewwindow');
+                var string = pdf.output('datauristring');
+                var iframe = "<iframe width='100%' height='100%' src='" + string + "'></iframe>"
+                var x = window.open();
+                x.document.open();
+                x.document.write(iframe);
+                x.document.close();
+            }
+            else 
+                pdf.output('datauri');
+        } 
+    </script>
+    <style>
+        .btn_mar{
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="text-align: center;">
+        <div class="btn-group-vertical">
+            <button class="btn btn-info btn_mar" onclick="doPdf()" data-toggle="tooltip" data-placement="bottom" title="Directly save pdf file">Do PDF</button>
+            <button class="btn btn-info btn_mar" onclick="doPdf2x4()" data-toggle="tooltip" data-placement="bottom" title="Directly save 2x4 pdf format">Do PDF 2x4 Landscape</button>
+            <button class="btn btn-info btn_mar" onclick="doPdfSt(2)" data-toggle="tooltip" data-placement="bottom" title="Open pdf current page">Do PDF Data Uri</button>
+            <button class="btn btn-info btn_mar" onclick="doPdfSt(3)" data-toggle="tooltip" data-placement="bottom" title="Open pdf new page">Do PDF URL New Window</button>
+        </div>
+    </div>
+</body>
+</html>
